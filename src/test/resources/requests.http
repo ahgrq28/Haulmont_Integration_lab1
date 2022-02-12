@@ -1,0 +1,72 @@
+###
+
+POST /media/bytes HTTP/1.1
+Host: localhost:8080
+Content-Type: image/jpeg
+
+< media.jpg
+
+
+###
+
+POST http://localhost:8080/media/raw
+Content-Type: application/octet-stream
+X-Part-Number: 1
+X-Total-Parts: 4
+
+< ./logo.part1
+
+###
+
+POST http://localhost:8080/media/raw
+Content-Type: application/octet-stream
+X-Part-Number: 2
+X-Total-Parts: 4
+
+< ./logo.part2
+
+###
+
+POST http://localhost:8080/media/upload
+Content-Type: multipart/form-data; boundary=WebBoundary
+
+--WebBoundary
+Content-Disposition: form-data; name="file"; filename="Import.xlsx"
+Content-Type: application/octet-stream
+
+< Import_with_Error.xlsx
+--WebBoundary--
+
+###
+
+POST http://localhost:8080/media/multi-multipart
+Content-Type: multipart/form-data; boundary=WebBoundary
+
+--WebBoundary
+Content-Disposition: form-data; name="files"; filename="media.jpg"
+Content-Type: image/jpeg
+
+< media.jpg
+--WebBoundary
+Content-Disposition: form-data; name="files"; filename="music.mp3"
+Content-Type: audio/mpeg
+
+< music.mp3
+--WebBoundary--
+
+###
+
+POST http://localhost:8080/media/multipart-model
+Content-Type: multipart/form-data; boundary=WebBoundary
+
+--WebBoundary
+Content-Disposition: form-data; name="name"
+Content-Type: text/plain
+
+Some form field
+--WebBoundary
+Content-Disposition: form-data; name="file"; filename="media.jpg"
+Content-Type: image/jpeg
+
+< media.jpg
+--WebBoundary--
